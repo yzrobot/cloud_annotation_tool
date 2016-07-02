@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CloudViewer</class>
+ <widget class="QMainWindow" name="CloudViewer">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>579</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>5000</width>
+    <height>5000</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>L-CAS Cloud Annotation Tool</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_0">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_0">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_1">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_load">
+          <property name="text">
+           <string>Load files</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="pushButton_clear">
+          <property name="text">
+           <string>Clear files</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QListWidget" name="listWidget_files"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_next">
+        <property name="text">
+         <string> automatically load next file</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_0">
+         <attribute name="title">
+          <string>Workspace</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_1">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_1">
+            <item>
+             <spacer name="horizontalSpacer_0">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_copyright">
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/lcas_logo.png&quot;/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://www.ai.univ-paris8.fr/~yz/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#aa0000;&quot;&gt;Author: Zhi Yan&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_0">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_show">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="formLayout_0">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_object_id">
+              <property name="text">
+               <string>Object ID:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_object_id"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_object_class">
+              <property name="text">
+               <string>Object class:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="comboBox_class">
+              <item>
+               <property name="text">
+                <string>pedestrian</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>group</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>wheelchair</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>cyclist</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>car</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>dontcare</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_object_visibility">
+              <property name="text">
+               <string>Object visibility:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="comboBox_visibility">
+              <item>
+               <property name="text">
+                <string>visible</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Partially visible</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="pushButton_label">
+              <property name="text">
+               <string>Label</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_1">
+         <attribute name="title">
+          <string>Parameters</string>
+         </attribute>
+         <layout class="QFormLayout" name="formLayout_1">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_bottom_top_removing">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Bottom-top removing:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_bottominterval">
+            <property name="text">
+             <string>BottomInterval:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="bottominterval">
+            <property name="text">
+             <string>0.2</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_topinterval">
+            <property name="text">
+             <string>TopInterval:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="topinterval">
+            <property name="text">
+             <string>5.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_euclidean_clustering">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Euclidean clustering:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_clustertolerance">
+            <property name="text">
+             <string>ClusterTolerance:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="clustertolerance">
+            <property name="text">
+             <string>0.4</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_minclustersize">
+            <property name="text">
+             <string>MinClusterSize:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="minclustersize">
+            <property name="text">
+             <string>15</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_maxclustersize">
+            <property name="text">
+             <string>MaxClusterSize:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLineEdit" name="maxclustersize">
+            <property name="text">
+             <string>30000</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_filtering">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Cluster filtering:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_minlwh">
+            <property name="text">
+             <string>MinLWH:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QLineEdit" name="minlwh">
+            <property name="text">
+             <string>0.1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_maxlwh">
+            <property name="text">
+             <string>MaxLWH:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLineEdit" name="maxlwh">
+            <property name="text">
+             <string>10.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QLabel" name="label_distancetoground">
+            <property name="text">
+             <string>DistanceToGround:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QLineEdit" name="distancetoground">
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QPushButton" name="pushButton_reload">
+            <property name="text">
+             <string>Reload</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QVTKWidget" name="qvtkWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>50</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QVTKWidget</class>
+   <extends>QWidget</extends>
+   <header>QVTKWidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton_clear</sender>
+   <signal>clicked()</signal>
+   <receiver>listWidget_files</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
