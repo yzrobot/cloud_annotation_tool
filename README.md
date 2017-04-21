@@ -1,6 +1,6 @@
 # L-CAS 3D Point Cloud Annotation Tool
 
-![alt tag](https://github.com/LCAS/cloud_annotation_tool/blob/master/screenshot.png)
+![alt tag](https://github.com/LCAS/cloud_annotation_tool/blob/master/images/screenshot.png)
 
 * Maintainer status: maintained
 * Author: Zhi Yan
@@ -9,4 +9,4 @@
 
 The tool provides a semi-automatic labeling function, means the 3D point cloud data (loaded from the PCD file) is first clustered to provide candidates for labeling, each candidate being a point cluster. Then, the user annotating the data, can label each object by indicating candidate's ID, category, and visibility. A flowchart of this process is shown below.
 
-![alt tag](https://github.com/LCAS/cloud_annotation_tool/blob/master/flowchart.png)
+![alt tag](https://github.com/LCAS/cloud_annotation_tool/blob/master/images/flowchart.png)
