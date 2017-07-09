@@ -35,15 +35,17 @@ CloudViewer::~CloudViewer() {
 void CloudViewer::loadButtonClicked() {
   // Load pcd files.
   QStringList files = QFileDialog::getOpenFileNames(this, tr("Select one or more files to open"), load_file_path, tr("Point cloud data(*.pcd)"));
-  if(files.isEmpty())
+  if(files.isEmpty()) {
     return;
+  }
   load_file_path = QFileInfo(files[0]).absolutePath();
   
   // Show file list.
   for(QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
     QList<QListWidgetItem*> items = ui->listWidget_files->findItems(*it, Qt::MatchExactly);
-    if(items.size() == 0)
+    if(items.size() == 0) {
       ui->listWidget_files->addItem(*it);
+    }
   }
   if(ui->listWidget_files->currentRow() == -1) {
     ui->listWidget_files->setCurrentRow(0);
@@ -51,11 +53,13 @@ void CloudViewer::loadButtonClicked() {
 }
 
 void CloudViewer::labelButtonClicked() {
-  if(ui->listWidget_files->currentRow() == -1)
+  if(ui->listWidget_files->currentRow() == -1) {
     return;
+  }
   
-  if(!QDir(current_label_path).exists())
+  if(!QDir(current_label_path).exists()) {
     QDir().mkpath(current_label_path);
+  }
   
   std::string string_to, line_to, line_in;
   for(std::vector<Feature>::iterator it = features.begin(); it != features.end(); ++it) {
@@ -104,8 +108,9 @@ void CloudViewer::labelButtonClicked() {
 	  viewer->addText3D(ui->comboBox_class->currentText().toStdString(), pos, 0.2, r, g, b, "labeled_text_"+boost::to_string(it->centroid[0]));
 	  viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], r, g, b, "labeled_box_"+boost::to_string(it->centroid[0]));
 	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(it->centroid[0]));
-	  if(!change_label)
+	  if(!change_label) {
 	    ui->label_show->setText("<font color=\"blue\">Label added.</font>");
+	  }
 	}
       }
       label_file.close();
@@ -113,8 +118,9 @@ void CloudViewer::labelButtonClicked() {
       label_file << string_to;
       label_file.close();
       ui->qvtkWidget->update();
-      if(auto_next)
+      if(auto_next) {
 	ui->listWidget_files->setCurrentRow(ui->listWidget_files->currentRow()+1);
+      }
       return;
     }
   }
@@ -122,7 +128,9 @@ void CloudViewer::labelButtonClicked() {
 }
 
 void CloudViewer::reloadButtonClicked() {
-  if(ui->listWidget_files->currentRow() != -1) fileItemChanged();
+  if(ui->listWidget_files->currentRow() != -1) {
+    fileItemChanged();
+  }
 }
 
 void CloudViewer::nextBoxChecked() {
@@ -198,9 +206,9 @@ void CloudViewer::clustering(std::string file_name) {
   pcl::getMinMax3D(*cloud, min, max);
   std::vector<int> indices;
   for(int i = 0; i < cloud->size(); ++i) {
-    if(cloud->points[i].z-min[2] >= ui->bottominterval->text().toDouble() &&
-       max[2]-cloud->points[i].z >= ui->topinterval->text().toDouble())
+    if(cloud->points[i].z-min[2] >= ui->bottominterval->text().toDouble() && max[2]-cloud->points[i].z >= ui->topinterval->text().toDouble()) {
       indices.push_back(i);
+    }
   }
   pcl::copyPointCloud(*cloud, indices, *cloud);
   
