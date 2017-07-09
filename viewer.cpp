@@ -57,7 +57,7 @@ void CloudViewer::labelButtonClicked() {
     return;
   }
   
-  if(!QDir(current_label_path).exists()) {
+  if(QDir(current_label_path).exists() == false) {
     QDir().mkpath(current_label_path);
   }
   
@@ -108,7 +108,7 @@ void CloudViewer::labelButtonClicked() {
 	  viewer->addText3D(ui->comboBox_class->currentText().toStdString(), pos, 0.2, r, g, b, "labeled_text_"+boost::to_string(it->centroid[0]));
 	  viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], r, g, b, "labeled_box_"+boost::to_string(it->centroid[0]));
 	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(it->centroid[0]));
-	  if(!change_label) {
+	  if(!change_label == false) {
 	    ui->label_show->setText("<font color=\"blue\">Label added.</font>");
 	  }
 	}
@@ -178,7 +178,7 @@ void CloudViewer::fileItemChanged() {
       }
     }
   }
-  if(!file_labeled) {
+  if(file_labeled == false) {
     ui->label_show->setText("<font color=\"blue\">File without labels.</font>");
   }
 }
@@ -307,8 +307,9 @@ void CloudViewer::featureExtraction(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
   if(max[0]-min[0]<ui->minlwh->text().toDouble() || max[0]-min[0]>ui->maxlwh->text().toDouble() ||
      max[1]-min[1]<ui->minlwh->text().toDouble() || max[1]-min[1]>ui->maxlwh->text().toDouble() ||
      max[2]-min[2]<ui->minlwh->text().toDouble() || max[2]-min[2]>ui->maxlwh->text().toDouble() ||
-     min[2]>ui->distancetoground->text().toDouble())
+     min[2]>ui->distancetoground->text().toDouble()) {
     return;
+  }
   
   int id = features.size();
   
@@ -319,9 +320,9 @@ void CloudViewer::featureExtraction(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
   f.max = max;
   features.push_back(f);
   
-  double r = std::max(0.3, (double)rand()/RAND_MAX);
-  double g = std::max(0.3, (double)rand()/RAND_MAX);
-  double b = std::max(0.3, (double)rand()/RAND_MAX);
+  double r = (std::max)(0.3, (double)rand()/RAND_MAX);
+  double g = (std::max)(0.3, (double)rand()/RAND_MAX);
+  double b = (std::max)(0.3, (double)rand()/RAND_MAX);
   viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], r, g, b, "box_"+boost::to_string(id));
   pcl::PointXYZ pos(centroid[0], centroid[1], centroid[2]);
   viewer->addText3D(boost::to_string(id), pos, 0.3, r, g, b, "id_"+boost::to_string(id));
