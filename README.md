@@ -1,4 +1,6 @@
-# L-CAS 3D Point Cloud Annotation Tool
+# L-CAS 3D Point Cloud Annotation Tool #
+
+[![Build Status][travis-img]][travis-link]
 
 ![alt tag](https://github.com/LCAS/cloud_annotation_tool/blob/master/images/screenshot.png)
 
