@@ -108,7 +108,7 @@ void CloudViewer::labelButtonClicked() {
 	  viewer->addText3D(ui->comboBox_class->currentText().toStdString(), pos, 0.2, r, g, b, "labeled_text_"+boost::to_string(it->centroid[0]));
 	  viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], r, g, b, "labeled_box_"+boost::to_string(it->centroid[0]));
 	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(it->centroid[0]));
-	  if(!change_label == false) {
+	  if(change_label == false) {
 	    ui->label_show->setText("<font color=\"blue\">Label added.</font>");
 	  }
 	}
