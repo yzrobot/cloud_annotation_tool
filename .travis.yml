@@ -1,1 +1,15 @@
+dist: trusty
+sudo: required
+language: generic
+cache: apt
 
+install:
+  - sudo apt-get update
+  - sudo apt-get install libqt4-dev qt4-qmake
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  
