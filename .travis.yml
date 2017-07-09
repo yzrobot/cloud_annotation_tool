@@ -5,7 +5,7 @@ cache: apt
 
 install:
   - sudo apt-get update
-  - sudo apt-get install libqt4-dev qt4-qmake libvtk5-dev
+  - sudo apt-get install libqt4-dev qt4-qmake libvtk5-dev libpcl-1.7-all-dev
 
 script:
   - mkdir build
