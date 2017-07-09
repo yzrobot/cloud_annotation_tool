@@ -4,6 +4,7 @@ language: generic
 cache: apt
 
 install:
+  sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
   - sudo apt-get update
   - sudo apt-get install libqt4-dev qt4-qmake libvtk5-dev libpcl-1.7-all-dev
 
