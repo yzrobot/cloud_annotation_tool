@@ -1,7 +1,6 @@
 # L-CAS 3D Point Cloud Annotation Tool #
 
 [![Build Status](https://travis-ci.org/yzrobot/cloud_annotation_tool.svg?branch=master)](https://travis-ci.org/yzrobot/cloud_annotation_tool)
-
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ecd31982b8ef4e21b096d7ded0979bb8)](https://www.codacy.com/app/yzrobot/cloud_annotation_tool?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yzrobot/cloud_annotation_tool&amp;utm_campaign=Badge_Grade)
 
 ![alt tag](https://github.com/LCAS/cloud_annotation_tool/blob/master/images/screenshot.png)
