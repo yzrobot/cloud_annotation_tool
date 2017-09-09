@@ -16,13 +16,16 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 ![alt tag](https://github.com/yzrobot/cloud_annotation_tool/blob/master/images/flowchart.png)
 
 ## Compiling ##
+
 ### Prerequisites ###
-- Qt 4.x: `sudo apt-get install libqt4-dev qt4-qmake`
-- VTK 5.x: `sudo apt-get install libvtk5-dev`
-- PCL 1.7: `sudo apt-get install libpcl-1.7-all-dev`
+
+* Qt 4.x: `sudo apt-get install libqt4-dev qt4-qmake`
+* VTK 5.x: `sudo apt-get install libvtk5-dev`
+* PCL 1.7: `sudo apt-get install libpcl-1.7-all-dev`
 
 ### Build script ###
-- `mkdir build`
-- `cd build`
-- `cmake ..`
-- `make`
+
+* `mkdir build`
+* `cd build`
+* `cmake ..`
+* `make`
