@@ -29,3 +29,15 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 * `cd build`
 * `cmake ..`
 * `make`
+
+### Test examples ###
+
+[lcas_simple_data.zip](lcas_simple_data.zip) contains 172 consecutive frames (in .pcd file) with 2 fully annotated pedestrians.
+
+### Citation ###
+
+If you are considering using this tool and the data provided, please reference the following:
+
+```
+bibtex coming soon!
+```
