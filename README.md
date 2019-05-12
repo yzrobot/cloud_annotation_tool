@@ -23,7 +23,7 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 *
 *
 
-## Compiling ##
+## Compiling (tested on Ubuntu 16.04) ##
 
 ### Prerequisites ###
 
