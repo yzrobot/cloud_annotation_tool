@@ -21,7 +21,7 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 ![flowchart](/images/flowchart.png)
 
-## Compiling ##
+## Compiling (tested on Ubuntu 14.04/16.04) ##
 
 ### Prerequisites ###
 
