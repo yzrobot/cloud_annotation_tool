@@ -21,7 +21,7 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 ## New features （compared to the first version） ##
 
-* Option for "Adaptive Clustering"
+* Option for "Adaptive Clustering" (*Optimized for Velodyne VLP-16, please feel free to modify the code for other models.*)
 * Feature extraction and visualization
 * SVM classifier training and prediction
 
