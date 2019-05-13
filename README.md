@@ -2,7 +2,7 @@
 
 * Compilation error under Ubuntu 16.04 LTS Xenial: [Issue #4](https://github.com/yzrobot/cloud_annotation_tool/issues/4)
 
-* :boom: [L-CAS 3D Point Cloud Annotation Tool 2](https://github.com/yzrobot/cloud_annotation_tool/tree/devel) is released. :boom:
+* :boom: [L-CAS 3D Point Cloud Annotation Tool :two:](https://github.com/yzrobot/cloud_annotation_tool/tree/devel) is released. :boom:
 
 # L-CAS 3D Point Cloud Annotation Tool #
 
