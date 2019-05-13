@@ -17,6 +17,8 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 ![flowchart](/images/flowchart.png)
 
+*The quickest way to activate the optional steps is to modify the source code and recompile. :scream:*
+
 ## New features （compared to the first version） ##
 
 * Option for "Adaptive Clustering"
