@@ -216,7 +216,7 @@ void CloudViewer::clustering(std::string file_name) {
     pcl::copyPointCloud(*cloud, indices, *cloud);
   }
   
-  // [OPTIONAL] Downsampling, not really necessary for Velodyne.
+  // [OPTIONAL] Downsampling.
   if(down_sampling) {
     std::cerr << "Points before downsampling: " << cloud->size() << std::endl;
     cloud_tmp.reset(new pcl::PointCloud<pcl::PointXYZ>);
