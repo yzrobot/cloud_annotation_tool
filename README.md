@@ -29,12 +29,13 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 * VTK 5.x: `sudo apt-get install libvtk5-dev`
 * PCL 1.7: `sudo apt-get install libpcl-1.7-all-dev`
 
-### Build script ###
+### Build and run ###
 
 * `mkdir build`
 * `cd build`
 * `cmake ..`
 * `make`
+* `./cloud_annotation_tool`
 
 ### Test examples ###
 
