@@ -1,5 +1,3 @@
-## Updating ... will be OK soon! ##
-
 # L-CAS 3D Point Cloud Annotation Tool 2 #
 
 [![Build Status](https://travis-ci.org/yzrobot/cloud_annotation_tool.svg?branch=master)](https://travis-ci.org/yzrobot/cloud_annotation_tool)
