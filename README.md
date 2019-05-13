@@ -21,6 +21,8 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 ![flowchart](/images/flowchart.png)
 
+*The quickest way to activate the optional steps is to modify the source code and recompile. :scream:*
+
 ## Compiling (tested on Ubuntu 14.04/16.04) ##
 
 ### Prerequisites ###
