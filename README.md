@@ -1,6 +1,6 @@
 ## Updating ... will be OK soon! ##
 
-# L-CAS 3D Point Cloud Annotation Tool :two: #
+# L-CAS 3D Point Cloud Annotation Tool 2 #
 
 [![Build Status](https://travis-ci.org/yzrobot/cloud_annotation_tool.svg?branch=master)](https://travis-ci.org/yzrobot/cloud_annotation_tool)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ecd31982b8ef4e21b096d7ded0979bb8)](https://www.codacy.com/app/yzrobot/cloud_annotation_tool?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yzrobot/cloud_annotation_tool&amp;utm_campaign=Badge_Grade)
@@ -19,9 +19,9 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 ## New features （compared to the first version） ##
 
-*
-*
-*
+* Option for "Adaptive Clustering"
+* Feature extraction and visualization
+* SVM classifier training and prediction
 
 ## Compiling (tested on Ubuntu 16.04) ##
 
@@ -30,13 +30,15 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 * Qt 4.x: `sudo apt-get install libqt4-dev qt4-qmake`
 * VTK 5.x: `sudo apt-get install libvtk5-dev`
 * PCL 1.7: `sudo apt-get install libpcl-1.7-all-dev`
+* LIBSVM: `sudo apt-get install libsvm-dev libsvm-tools`
 
-### Build script ###
+### Build and run ###
 
 * `mkdir build`
 * `cd build`
 * `cmake ..`
 * `make`
+* `./cloud_annotation_tool`
 
 ### Test examples ###
 
