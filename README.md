@@ -37,11 +37,11 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 * `make`
 * `./cloud_annotation_tool`
 
-### Test examples ###
+## Test examples ##
 
 [lcas_simple_data.zip](lcas_simple_data.zip) contains 172 consecutive frames (in .pcd file) with 2 fully annotated pedestrians.
 
-### Citation ###
+## Citation ##
 
 If you are considering using this tool and the data provided, please reference the following:
 
