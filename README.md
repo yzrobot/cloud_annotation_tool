@@ -44,6 +44,12 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 [lcas_simple_data.zip](lcas_simple_data.zip) contains 172 consecutive frames (in .pcd file) with 2 fully annotated pedestrians.
 
+## Before complaining ##
+
+* You may need to manually add negative examples
+* Make sure you have enough examples for training
+* ...
+
 ## Citation ##
 
 If you are considering using this tool and the data provided, please reference the following:
