@@ -69,6 +69,6 @@ class CloudViewer: public QMainWindow {
     std::vector<Feature> features;
     std::vector< std::vector<std::string> > labels;
     std::fstream label_file;
-};
+}; 
 
 #endif // VIEWER_H
