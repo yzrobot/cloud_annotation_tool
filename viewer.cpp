@@ -10,9 +10,11 @@ CloudViewer::CloudViewer(QWidget *parent):
   load_file_path = std::getenv("HOME");
   
   auto_next = false;
-  removing_outliers = false;
-  downsampling = false;
-  removing_planes = false;
+  
+  remove_top_bottom = true;
+  down_sampling = false;
+  remove_outliers = false;
+  remove_planes = false;
   
   // Set up the QVTK window.
   viewer.reset(new pcl::visualization::PCLVisualizer("PCL Viewer", false));
@@ -201,19 +203,35 @@ void CloudViewer::clustering(std::string file_name) {
     pcl::removeNaNFromPointCloud(*cloud_tmp, *cloud, vec);
   }
   
-  // [MANDATORY] Removing ground plane and top surface.
-  Eigen::Vector4f min, max;
-  pcl::getMinMax3D(*cloud, min, max);
-  std::vector<int> indices;
-  for(int i = 0; i < cloud->size(); ++i) {
-    if(cloud->points[i].z-min[2] >= ui->bottominterval->text().toDouble() && max[2]-cloud->points[i].z >= ui->topinterval->text().toDouble()) {
-      indices.push_back(i);
+  // [OPTIONAL] Removing ground plane and top surface.
+  if(remove_top_bottom) {
+    Eigen::Vector4f min, max;
+    pcl::getMinMax3D(*cloud, min, max);
+    std::vector<int> indices;
+    for(int i = 0; i < cloud->size(); ++i) {
+      if(cloud->points[i].z-min[2] >= ui->bottominterval->text().toDouble() && max[2]-cloud->points[i].z >= ui->topinterval->text().toDouble()) {
+	indices.push_back(i);
+      }
     }
+    pcl::copyPointCloud(*cloud, indices, *cloud);
   }
-  pcl::copyPointCloud(*cloud, indices, *cloud);
   
+  // [OPTIONAL] Downsampling, not really necessary for Velodyne.
+  if(down_sampling) {
+    std::cerr << "Points before downsampling: " << cloud->size() << std::endl;
+    cloud_tmp.reset(new pcl::PointCloud<pcl::PointXYZ>);
+    
+    pcl::VoxelGrid<pcl::PointXYZ> vg;
+    vg.setInputCloud(cloud);
+    vg.setLeafSize(0.06, 0.06, 0.06);
+    vg.filter(*cloud_tmp);
+    
+    pcl::copyPointCloud(*cloud_tmp, *cloud);
+    std::cerr << "Points after downsampling: " << cloud->size() << std::endl;
+  }
+
   // [OPTIONAL] Removing outliers.
-  if(removing_outliers) {
+  if(remove_outliers) {
     std::cerr << "Points before removing outliers: " << cloud->size() << std::endl;
     cloud_tmp.reset(new pcl::PointCloud<pcl::PointXYZ>);
     
@@ -227,22 +245,8 @@ void CloudViewer::clustering(std::string file_name) {
     std::cerr << "Points after removing outliers: " << cloud->size() << std::endl;
   }
   
-  // [OPTIONAL] Downsampling, not really necessary for Velodyne.
-  if(downsampling) {
-    std::cerr << "Points before downsampling: " << cloud->size() << std::endl;
-    cloud_tmp.reset(new pcl::PointCloud<pcl::PointXYZ>);
-    
-    pcl::VoxelGrid<pcl::PointXYZ> vg;
-    vg.setInputCloud(cloud);
-    vg.setLeafSize(0.06, 0.06, 0.06);
-    vg.filter(*cloud_tmp);
-    
-    pcl::copyPointCloud(*cloud_tmp, *cloud);
-    std::cerr << "Points after downsampling: " << cloud->size() << std::endl;
-  }
-  
   // [OPTIONAL] Removing planes.
-  if(removing_planes) {
+  if(remove_planes) {
     std::cerr << "Points before removing planes: " << cloud->size() << std::endl;
     cloud_tmp.reset(new pcl::PointCloud<pcl::PointXYZ>);
     

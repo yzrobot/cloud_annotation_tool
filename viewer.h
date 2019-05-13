@@ -61,9 +61,10 @@ class CloudViewer: public QMainWindow {
     bool file_labeled;
     bool auto_next;
     
-    bool removing_outliers;
-    bool downsampling;
-    bool removing_planes;
+    bool remove_top_bottom;
+    bool down_sampling;
+    bool remove_outliers;
+    bool remove_planes;
     
     std::vector<Feature> features;
     std::vector< std::vector<std::string> > labels;
