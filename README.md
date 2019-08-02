@@ -53,4 +53,5 @@ If you are considering using this tool and the data provided, please reference t
    title = {Online learning for 3D LiDAR-based human detection: Experimental analysis of point cloud clustering and classification methods},
    journal = {Autonomous Robots},
    year = {2019}
+}
 ```
