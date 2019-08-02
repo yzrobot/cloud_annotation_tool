@@ -55,5 +55,9 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 If you are considering using this tool and the data provided, please reference the following:
 
 ```
-bibtex coming soon!
+@article{yz19auro,
+   author = {Zhi Yan and Tom Duckett and Nicola Bellotto},
+   title = {Online learning for 3D LiDAR-based human detection: Experimental analysis of point cloud clustering and classification methods},
+   journal = {Autonomous Robots},
+   year = {2019}
 ```
