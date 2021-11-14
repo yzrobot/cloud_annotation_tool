@@ -23,7 +23,7 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 *The quickest way to activate the optional steps is to modify the source code and recompile. :scream:*
 
-## Compiling (tested on Ubuntu 14.04/16.04) ##
+## Compiling (tested on Ubuntu 14.04/16.04/18.04, failed on 20.04) ##
 
 ### Prerequisites ###
 
