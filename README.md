@@ -23,7 +23,7 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 * Feature extraction and visualization
 * SVM classifier training and prediction
 
-## Compiling (tested on Ubuntu 16.04) ##
+## Compiling (tested on Ubuntu 16.04/18.04, failed on 20.04) ##
 
 ### Prerequisites ###
 
