@@ -46,7 +46,7 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 ## Before complaining ##
 
-* You may need to manually add negative examples
+* You may need to add negative examples ("Extract background samples" button)
 * Make sure you have enough examples for training
 * ...
 
