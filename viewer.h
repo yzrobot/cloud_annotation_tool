@@ -58,6 +58,7 @@ class CloudViewer: public QMainWindow {
     void loadButtonClicked();
     void labelButtonClicked();
     void extractButtonClicked();
+    void backgroundButtonClicked();
     void trainButtonClicked();
     void predictButtonClicked();
     void reloadButtonClicked();

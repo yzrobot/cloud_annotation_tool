@@ -1,6 +1,8 @@
 #include "viewer.h"
 #include "build/ui_viewer.h"
 
+#define IOU_T 0.5
+
 CloudViewer::CloudViewer(QWidget *parent):
   QMainWindow(parent),
   ui(new Ui::CloudViewer) {
@@ -26,13 +28,13 @@ CloudViewer::CloudViewer(QWidget *parent):
   viewer.reset(new pcl::visualization::PCLVisualizer("PCL Viewer", false));
   ui->qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
   viewer->setupInteractor(ui->qvtkWidget->GetInteractor(), ui->qvtkWidget->GetRenderWindow());
-  viewer->setBackgroundColor(0.2, 0.2, 0.2);
   ui->qvtkWidget->update();
   
   // Connect UI and their functions.
   connect(ui->pushButton_load, SIGNAL(clicked()), this, SLOT(loadButtonClicked()));
   connect(ui->pushButton_label, SIGNAL(clicked()), this, SLOT(labelButtonClicked()));
   connect(ui->pushButton_extract, SIGNAL(clicked()), this, SLOT(extractButtonClicked()));
+  connect(ui->pushButton_background, SIGNAL(clicked()), this, SLOT(backgroundButtonClicked()));
   connect(ui->pushButton_train, SIGNAL(clicked()), this, SLOT(trainButtonClicked()));
   connect(ui->pushButton_predict, SIGNAL(clicked()), this, SLOT(predictButtonClicked()));
   connect(ui->pushButton_reload, SIGNAL(clicked()), this, SLOT(reloadButtonClicked()));
@@ -49,6 +51,34 @@ CloudViewer::CloudViewer(QWidget *parent):
 
 CloudViewer::~CloudViewer() {
   delete ui;
+}
+
+double s2d(std::string s) {
+  std::stringstream ss;
+  double d;
+  ss << s;
+  ss >> d;
+  return d;
+}
+
+float iou3d(float axmin, float aymin, float azmin,
+	    float axmax, float aymax, float azmax,
+	    float bxmin, float bymin, float bzmin,
+	    float bxmax, float bymax, float bzmax) {
+  float xa = std::max(axmin, bxmin);
+  float ya = std::max(aymin, bymin);
+  float za = std::max(azmin, bzmin);
+  
+  float xb = std::min(axmax, bxmax);
+  float yb = std::min(aymax, bymax);
+  float zb = std::min(azmax, bzmax);
+  
+  float interVolume = std::max(0.0, double(xb-xa)) * std::max(0.0, double(yb-ya)) * std::max(0.0, double(zb-za));
+  
+  float boxAVolume = (axmax - axmin) * (aymax - aymin) * (azmax - azmin);
+  float boxBVolume = (bxmax - bxmin) * (bymax - bymin) * (bzmax - bzmin);
+  
+  return (interVolume / (boxAVolume + boxBVolume - interVolume));
 }
 
 void writeData(std::fstream &file, std::vector<Feature>::iterator &it, int class_lable) {
@@ -125,9 +155,9 @@ void CloudViewer::labelButtonClicked() {
       while(std::getline(label_file, line_in)) {
 	std::vector<std::string> params;
 	boost::split(params, line_in, boost::is_any_of(" "));
-	if(it->centroid[0] > atof(params[4].c_str()) && it->centroid[0] < atof(params[7].c_str()) &&
-	   it->centroid[1] > atof(params[5].c_str()) && it->centroid[1] < atof(params[8].c_str()) &&
-	   it->centroid[2] > atof(params[6].c_str()) && it->centroid[2] < atof(params[9].c_str())) {
+	if(it->centroid[0] > s2d(params[4]) && it->centroid[0] < s2d(params[7]) &&
+	   it->centroid[1] > s2d(params[5]) && it->centroid[1] < s2d(params[8]) &&
+	   it->centroid[2] > s2d(params[6]) && it->centroid[2] < s2d(params[9])) {
 	  //if(line_in.substr(line_in.find(" ")+1, line_in.length()-line_in.find(" ")-3).compare(line_to) == 0) {
 	  new_label = false;
       	  if(ui->comboBox_class->currentText().toStdString().compare("dontcare") == 0) {
@@ -165,6 +195,7 @@ void CloudViewer::labelButtonClicked() {
 	  pcl::PointXYZ pos(it->centroid[0], it->centroid[1], it->max[2]);
 	  viewer->addText3D(ui->comboBox_class->currentText().toStdString(), pos, 0.2, r, g, b, "labeled_text_"+boost::to_string(it->centroid[0]));
 	  viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], r, g, b, "labeled_box_"+boost::to_string(it->centroid[0]));
+	  viewer->setRepresentationToWireframeForAllActors();
 	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(it->centroid[0]));
 	  if(change_label == false) {
 	    ui->label_show->setText("<font color=\"blue\">Label added.</font>");
@@ -213,8 +244,8 @@ void CloudViewer::extractButtonClicked() { // @todo use svm.h
       for(int i = 0; i < labels.size(); i++) {
       	if(labels[i][0].compare(ui->comboBox_class->currentText().toStdString().c_str()) == 0) {
       	  std::vector<int> indices;
-      	  Eigen::Vector4f min_pt(atof(labels[i][4].c_str()), atof(labels[i][5].c_str()), atof(labels[i][6].c_str()), 0);
-      	  Eigen::Vector4f max_pt(atof(labels[i][7].c_str()), atof(labels[i][8].c_str()), atof(labels[i][9].c_str()), 0);
+      	  Eigen::Vector4f min_pt(s2d(labels[i][4]), s2d(labels[i][5]), s2d(labels[i][6]), 0);
+      	  Eigen::Vector4f max_pt(s2d(labels[i][7]), s2d(labels[i][8]), s2d(labels[i][9]), 0);
       	  pcl::PointCloud<pcl::PointXYZI>::Ptr cluster(new pcl::PointCloud<pcl::PointXYZI>);
       	  pcl::getPointsInBox(*cloud, min_pt, max_pt, indices);
       	  pcl::copyPointCloud(*cloud, indices, *cluster);
@@ -243,7 +274,47 @@ void CloudViewer::extractButtonClicked() { // @todo use svm.h
   }
 }
 
+void CloudViewer::backgroundButtonClicked() {
+  if(!QDir("svm").exists()) {
+    QDir().mkdir("svm");
+  }
+  
+  if(file_labeled) {
+    ui->label_show->setText("<font color=\"blue\">File with labels: unlabeled clusters are<br/>extracted as background samples.</font>");
+  } else {
+    ui->label_show->setText("<font color=\"blue\">File without labels: all clusters are<br/>extracted as background samples.</font>");
+  }
+  
+  bool background;
+  for(std::vector<Feature>::iterator it = features.begin(); it != features.end(); ++it) {
+    feature_file.open("svm/background", std::fstream::in | std::fstream::out | std::fstream::app);
+    background = true;
+    
+    if(file_labeled) {
+      for(int i = 0; i < labels.size(); i++) {
+	if(iou3d(it->min[0], it->min[1], it->min[2], it->max[0], it->max[1], it->max[2],
+		 s2d(labels[i][4]), s2d(labels[i][5]), s2d(labels[i][6]), s2d(labels[i][7]), s2d(labels[i][8]), s2d(labels[i][9])) >= IOU_T) {
+	  background = false;
+	}
+      }
+    }
+    
+    if(background) {
+      writeData(feature_file, it, -1);
+      viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], 0.0, 0.0, 1.0, "background_box_"+boost::to_string(it->id));
+      viewer->setRepresentationToWireframeForAllActors();
+      viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "background_box_"+boost::to_string(it->id));
+    }
+    
+    feature_file.close();
+  }
+}
+
 void CloudViewer::trainButtonClicked() { // @todo use svm.h
+  QProcess *process = new QProcess;
+  process->start("bash", QStringList() << "-c" << "cat svm/background >> svm/"+ui->comboBox_class->currentText());
+  process->waitForFinished();
+  
   int exit_code = QProcess::execute("svm-easy svm/"+ui->comboBox_class->currentText());
   if(exit_code != 0) {
     ui->label_show->setText("<font color=\"red\">Training failed.</font>");
@@ -279,6 +350,7 @@ void CloudViewer::predictButtonClicked() { // @todo use svm.h
     std::getline(file, label);
     if(label.at(0) == '1') {
       viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], 0.0, 1.0, 1.0, "predict_box_"+boost::to_string(it->id));
+      viewer->setRepresentationToWireframeForAllActors();
       viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "predict_box_"+boost::to_string(it->id));
       //pcl::PointXYZ pos(it->centroid[0], it->centroid[1], it->centroid[2]);
       //viewer->addText3D(boost::to_string(it->id), pos, 0.2, 1.0, 0.0, 0.0, "predict_id_"+boost::to_string(it->id));
@@ -349,7 +421,7 @@ void CloudViewer::fileItemChanged() {
 	  std::vector<std::string> params;
 	  boost::split(params, line, boost::is_any_of(" "));
 	  labels.push_back(params);
-	  pcl::PointXYZ pos(atof(params[1].c_str()), atof(params[2].c_str()), atof(params[9].c_str()));
+	  pcl::PointXYZ pos(s2d(params[1]), s2d(params[2]), s2d(params[9]));
 	  double r, g, b;
 	  if(params[0].compare("pedestrian") == 0) {r=1; g=0; b=0;}
 	  if(params[0].compare("group") == 0)      {r=0; g=1; b=0;}
@@ -357,10 +429,11 @@ void CloudViewer::fileItemChanged() {
 	  if(params[0].compare("cyclist") == 0)    {r=1; g=1; b=0;}
 	  if(params[0].compare("car") == 0)        {r=0; g=1; b=1;}
 	  viewer->addText3D(params[0], pos, 0.2, r, g, b, "labeled_text_"+params[1]);
-	  viewer->addCube(atof(params[4].c_str()), atof(params[7].c_str()),
-			  atof(params[5].c_str()), atof(params[8].c_str()),
-			  atof(params[6].c_str()), atof(params[9].c_str()),
+	  viewer->addCube(s2d(params[4]), s2d(params[7]),
+			  s2d(params[5]), s2d(params[8]),
+			  s2d(params[6]), s2d(params[9]),
 			  r, g, b, "labeled_box_"+boost::to_string(params[1]));
+	  viewer->setRepresentationToWireframeForAllActors();
 	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(params[1]));
 	  ui->qvtkWidget->update();
 	}
@@ -536,7 +609,7 @@ void CloudViewer::clustering(std::string file_name) {
   if(!trunk_show && !slice_show && !bins_show) {
     if(!show_intensity) {
       viewer->addPointCloud<pcl::PointXYZI>(cloud);
-      //viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3);
+      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3);
     } else {
       pcl::visualization::PointCloudColorHandlerGenericField<pcl::PointXYZI> handler(cloud, "intensity");
       viewer->addPointCloud<pcl::PointXYZI>(cloud, handler);
@@ -637,6 +710,7 @@ void CloudViewer::featureExtraction(pcl::PointCloud<pcl::PointXYZI>::Ptr pc, boo
     double g = std::max(0.3, (double)rand()/RAND_MAX);
     double b = std::max(0.3, (double)rand()/RAND_MAX);
     viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], r, g, b, "box_"+boost::to_string(f.id));
+    viewer->setRepresentationToWireframeForAllActors();
     pcl::PointXYZ pos(centroid[0], centroid[1], centroid[2]);
     viewer->addText3D(boost::to_string(f.id), pos, 0.3, r, g, b, "id_"+boost::to_string(f.id));
   }
@@ -746,6 +820,7 @@ void CloudViewer::computeHistogramNormalized(pcl::PointCloud<pcl::PointXYZ>::Ptr
       	viewer->addCube(min_box[0], max_box[0], min_box[1], max_box[1], min_box[2], max_box[2],
       			std::max(0.3,(double)rand()/RAND_MAX), std::max(0.3,(double)rand()/RAND_MAX), std::max(0.3,(double)rand()/RAND_MAX),
       			"histogram_"+boost::to_string(i)+"_"+boost::to_string(j)+"_"+boost::to_string(horiz_bins*verti_bins)+"_"+boost::to_string(id));
+	viewer->setRepresentationToWireframeForAllActors();
       	ui->qvtkWidget->update();
       }
     }
@@ -781,6 +856,7 @@ void CloudViewer::computeSlice(pcl::PointCloud<pcl::PointXYZI>::Ptr pc, int n, F
       if(slice_show) {
 	viewer->addPointCloud<pcl::PointXYZI>(pc_blocks[i], "block_"+boost::to_string(i)+"_"+boost::to_string(f.id));
 	viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], 1.0, 0.27, 0.0, "slice_"+boost::to_string(i)+"_"+boost::to_string(f.id));
+	viewer->setRepresentationToWireframeForAllActors();
 	ui->qvtkWidget->update();
       }
     }
