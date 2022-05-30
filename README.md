@@ -23,21 +23,25 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 
 *The quickest way to activate the optional steps is to modify the source code and recompile. :scream:*
 
-## Compiling (tested on Ubuntu 14.04/16.04/18.04, failed on 20.04) ##
+## Test environment ##
 
-### Prerequisites ###
+```
+Ubuntu 20.04.4 LTS (ROS Noetic)
+Qt 5.12.8
+VTK 7.1.1
+PCL 1.10
+LIBSVM
+```
 
-* Qt 4.x: `sudo apt-get install libqt4-dev qt4-qmake`
-* VTK 5.x: `sudo apt-get install libvtk5-dev`
-* PCL 1.7: `sudo apt-get install libpcl-1.7-all-dev`
+## Build and run ##
 
-### Build and run ###
-
-* `mkdir build`
-* `cd build`
-* `cmake ..`
-* `make`
-* `./cloud_annotation_tool`
+```sh
+mkdir build
+cd build
+cmake ..
+make
+./cloud_annotation_tool
+```
 
 ## Test examples ##
 
