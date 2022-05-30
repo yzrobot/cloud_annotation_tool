@@ -1,3 +1,8 @@
+## Notices ##
+
+* Compilation error under Ubuntu 16.04 LTS Xenial: [Issue #4](https://github.com/yzrobot/cloud_annotation_tool/issues/4)
+* Branch for Ubuntu 20.04: [devel_2004](https://github.com/yzrobot/cloud_annotation_tool/tree/devel_2004)
+
 # L-CAS 3D Point Cloud Annotation Tool 2 #
 
 [![Build Status](https://travis-ci.org/yzrobot/cloud_annotation_tool.svg?branch=master)](https://travis-ci.org/yzrobot/cloud_annotation_tool)
