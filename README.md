@@ -23,14 +23,15 @@ The tool provides a semi-automatic labeling function, means the 3D point cloud d
 * Feature extraction and visualization
 * SVM classifier training and prediction
 
-## Compiling (tested on Ubuntu 16.04/18.04, failed on 20.04) ##
+## Test environment ##
 
-### Prerequisites ###
-
-* Qt 4.x: `sudo apt-get install libqt4-dev qt4-qmake`
-* VTK 5.x: `sudo apt-get install libvtk5-dev`
-* PCL 1.7: `sudo apt-get install libpcl-1.7-all-dev`
-* LIBSVM: `sudo apt-get install libsvm-dev libsvm-tools`
+```
+Ubuntu 20.04.4 LTS (ROS Noetic)
+Qt 5.12.8
+VTK 7.1.1
+PCL 1.10
+LIBSVM
+```
 
 ### Build and run ###
 
