@@ -33,13 +33,15 @@ PCL 1.10
 LIBSVM
 ```
 
-### Build and run ###
+## Build and run ##
 
-* `mkdir build`
-* `cd build`
-* `cmake ..`
-* `make`
-* `./cloud_annotation_tool`
+```sh
+mkdir build
+cd build
+cmake ..
+make
+./cloud_annotation_tool
+```
 
 ## Test examples ##
 
