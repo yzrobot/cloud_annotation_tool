@@ -146,11 +146,11 @@ void CloudViewer::labelButtonClicked() {
   
   std::string string_to, line_to, line_in;
   for(std::vector<Feature>::iterator it = features.begin(); it != features.end(); ++it) {
-    if(boost::to_string(it->id) == ui->lineEdit_object_id->text().toStdString()) {
+    if(boost::lexical_cast<std::string>(it->id) == ui->lineEdit_object_id->text().toStdString()) {
       bool new_label = true, change_label = false;
-      line_to = boost::to_string(it->centroid[0])+" "+boost::to_string(it->centroid[1])+" "+boost::to_string(it->centroid[2])+" "+
-	boost::to_string(it->min[0])+" "+boost::to_string(it->min[1])+" "+boost::to_string(it->min[2])+" "+
-	boost::to_string(it->max[0])+" "+boost::to_string(it->max[1])+" "+boost::to_string(it->max[2]);
+      line_to = boost::lexical_cast<std::string>(it->centroid[0])+" "+boost::lexical_cast<std::string>(it->centroid[1])+" "+boost::lexical_cast<std::string>(it->centroid[2])+" "+
+	boost::lexical_cast<std::string>(it->min[0])+" "+boost::lexical_cast<std::string>(it->min[1])+" "+boost::lexical_cast<std::string>(it->min[2])+" "+
+	boost::lexical_cast<std::string>(it->max[0])+" "+boost::lexical_cast<std::string>(it->max[1])+" "+boost::lexical_cast<std::string>(it->max[2]);
       label_file.open((current_label_path+"/"+QFileInfo(ui->listWidget_files->currentItem()->text()).completeBaseName()+".txt").toStdString().c_str(), std::fstream::in);
       while(std::getline(label_file, line_in)) {
 	std::vector<std::string> params;
@@ -161,18 +161,18 @@ void CloudViewer::labelButtonClicked() {
 	  //if(line_in.substr(line_in.find(" ")+1, line_in.length()-line_in.find(" ")-3).compare(line_to) == 0) {
 	  new_label = false;
       	  if(ui->comboBox_class->currentText().toStdString().compare("dontcare") == 0) {
-      	    viewer->removeText3D("labeled_text_"+boost::to_string(it->centroid[0]));
-      	    viewer->removeShape("labeled_box_"+boost::to_string(it->centroid[0]));
+      	    viewer->removeText3D("labeled_text_"+boost::lexical_cast<std::string>(it->centroid[0]));
+      	    viewer->removeShape("labeled_box_"+boost::lexical_cast<std::string>(it->centroid[0]));
       	    ui->label_show->setText("<font color=\"blue\">Label removed.</font>");
 	    continue;
       	  } else {
       	    if(ui->comboBox_class->currentText().toStdString().compare(line_in.substr(0, line_in.find(" "))) == 0 &&
-	       boost::to_string(ui->comboBox_visibility->currentIndex()).compare(line_in.substr(line_in.length()-1)) == 0) {
+	       boost::lexical_cast<std::string>(ui->comboBox_visibility->currentIndex()).compare(line_in.substr(line_in.length()-1)) == 0) {
       	      ui->label_show->setText("<font color=\"blue\">Do nothing.</font>");
       	    } else {
 	      change_label = true;
-	      viewer->removeText3D("labeled_text_"+boost::to_string(it->centroid[0]));
-	      viewer->removeShape("labeled_box_"+boost::to_string(it->centroid[0]));
+	      viewer->removeText3D("labeled_text_"+boost::lexical_cast<std::string>(it->centroid[0]));
+	      viewer->removeShape("labeled_box_"+boost::lexical_cast<std::string>(it->centroid[0]));
 	      ui->label_show->setText("<font color=\"blue\">Label changed.</font>");
 	      continue;
       	    }
@@ -185,7 +185,7 @@ void CloudViewer::labelButtonClicked() {
 	  ui->label_show->setText("<font color=\"blue\">Do nothing.</font>");	
 	} else {
 	  string_to += ui->comboBox_class->currentText().toStdString()+" "+line_to+" "+
-	    boost::to_string(ui->comboBox_visibility->currentIndex())+"\n";
+	    boost::lexical_cast<std::string>(ui->comboBox_visibility->currentIndex())+"\n";
 	  double r, g, b;
 	  if(ui->comboBox_class->currentText().toStdString().compare("pedestrian") == 0) {r=1; g=0; b=0;}
 	  if(ui->comboBox_class->currentText().toStdString().compare("group") == 0)      {r=0; g=1; b=0;}
@@ -193,10 +193,10 @@ void CloudViewer::labelButtonClicked() {
 	  if(ui->comboBox_class->currentText().toStdString().compare("cyclist") == 0)    {r=1; g=1; b=0;}
 	  if(ui->comboBox_class->currentText().toStdString().compare("car") == 0)        {r=0; g=1; b=1;}
 	  pcl::PointXYZ pos(it->centroid[0], it->centroid[1], it->max[2]);
-	  viewer->addText3D(ui->comboBox_class->currentText().toStdString(), pos, 0.2, r, g, b, "labeled_text_"+boost::to_string(it->centroid[0]));
-	  viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], r, g, b, "labeled_box_"+boost::to_string(it->centroid[0]));
+	  viewer->addText3D(ui->comboBox_class->currentText().toStdString(), pos, 0.2, r, g, b, "labeled_text_"+boost::lexical_cast<std::string>(it->centroid[0]));
+	  viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], r, g, b, "labeled_box_"+boost::lexical_cast<std::string>(it->centroid[0]));
 	  viewer->setRepresentationToWireframeForAllActors();
-	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(it->centroid[0]));
+	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::lexical_cast<std::string>(it->centroid[0]));
 	  if(change_label == false) {
 	    ui->label_show->setText("<font color=\"blue\">Label added.</font>");
 	  }
@@ -223,7 +223,7 @@ void CloudViewer::extractButtonClicked() { // @todo use svm.h
   
   if(ui->comboBox_policy->currentIndex() == 0) { // single object
     for(std::vector<Feature>::iterator it = features.begin(); it != features.end(); ++it) {
-      if(boost::to_string(it->id) == ui->lineEdit_object_id->text().toStdString()) {
+      if(boost::lexical_cast<std::string>(it->id) == ui->lineEdit_object_id->text().toStdString()) {
 	feature_file.open(("svm/"+ui->comboBox_class->currentText()).toStdString().c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
 	writeData(feature_file, it, 1);
 	feature_file.close();
@@ -301,9 +301,9 @@ void CloudViewer::backgroundButtonClicked() {
     
     if(background) {
       writeData(feature_file, it, -1);
-      viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], 0.0, 0.0, 1.0, "background_box_"+boost::to_string(it->id));
+      viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], 0.0, 0.0, 1.0, "background_box_"+boost::lexical_cast<std::string>(it->id));
       viewer->setRepresentationToWireframeForAllActors();
-      viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "background_box_"+boost::to_string(it->id));
+      viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "background_box_"+boost::lexical_cast<std::string>(it->id));
     }
     
     feature_file.close();
@@ -349,11 +349,11 @@ void CloudViewer::predictButtonClicked() { // @todo use svm.h
   for(std::vector<Feature>::iterator it = features.begin(); it != features.end(); ++it) {
     std::getline(file, label);
     if(label.at(0) == '1') {
-      viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], 0.0, 1.0, 1.0, "predict_box_"+boost::to_string(it->id));
+      viewer->addCube(it->min[0], it->max[0], it->min[1], it->max[1], it->min[2], it->max[2], 0.0, 1.0, 1.0, "predict_box_"+boost::lexical_cast<std::string>(it->id));
       viewer->setRepresentationToWireframeForAllActors();
-      viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "predict_box_"+boost::to_string(it->id));
+      viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "predict_box_"+boost::lexical_cast<std::string>(it->id));
       //pcl::PointXYZ pos(it->centroid[0], it->centroid[1], it->centroid[2]);
-      //viewer->addText3D(boost::to_string(it->id), pos, 0.2, 1.0, 0.0, 0.0, "predict_id_"+boost::to_string(it->id));
+      //viewer->addText3D(boost::lexical_cast<std::string>(it->id), pos, 0.2, 1.0, 0.0, 0.0, "predict_id_"+boost::lexical_cast<std::string>(it->id));
       n++;
     }
   }
@@ -432,9 +432,9 @@ void CloudViewer::fileItemChanged() {
 	  viewer->addCube(s2d(params[4]), s2d(params[7]),
 			  s2d(params[5]), s2d(params[8]),
 			  s2d(params[6]), s2d(params[9]),
-			  r, g, b, "labeled_box_"+boost::to_string(params[1]));
+			  r, g, b, "labeled_box_"+boost::lexical_cast<std::string>(params[1]));
 	  viewer->setRepresentationToWireframeForAllActors();
-	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::to_string(params[1]));
+	  viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_LINE_WIDTH, 4, "labeled_box_"+boost::lexical_cast<std::string>(params[1]));
 	  ui->qvtkWidget->update();
 	}
 	label_file.close();
@@ -699,9 +699,9 @@ void CloudViewer::featureExtraction(pcl::PointCloud<pcl::PointXYZI>::Ptr pc, boo
     pcl::PointXYZ eigen_z(pca.getEigenVectors()(0,2) + pca.getMean()(0),
   			  pca.getEigenVectors()(1,2) + pca.getMean()(1),
   			  pca.getEigenVectors()(2,2) + pca.getMean()(2));
-    viewer->addLine(eigen_center, eigen_x, 1.0, 0.0, 0.0, "eigen_x_"+boost::to_string(f.id));
-    viewer->addLine(eigen_center, eigen_y, 0.0, 1.0, 0.0, "eigen_y_"+boost::to_string(f.id));
-    viewer->addLine(eigen_center, eigen_z, 0.0, 0.0, 1.0, "eigen_z_"+boost::to_string(f.id));
+    viewer->addLine(eigen_center, eigen_x, 1.0, 0.0, 0.0, "eigen_x_"+boost::lexical_cast<std::string>(f.id));
+    viewer->addLine(eigen_center, eigen_y, 0.0, 1.0, 0.0, "eigen_y_"+boost::lexical_cast<std::string>(f.id));
+    viewer->addLine(eigen_center, eigen_z, 0.0, 0.0, 1.0, "eigen_z_"+boost::lexical_cast<std::string>(f.id));
   }
   
   // Draw cluster box.
@@ -709,10 +709,10 @@ void CloudViewer::featureExtraction(pcl::PointCloud<pcl::PointXYZI>::Ptr pc, boo
     double r = std::max(0.3, (double)rand()/RAND_MAX);
     double g = std::max(0.3, (double)rand()/RAND_MAX);
     double b = std::max(0.3, (double)rand()/RAND_MAX);
-    viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], r, g, b, "box_"+boost::to_string(f.id));
+    viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], r, g, b, "box_"+boost::lexical_cast<std::string>(f.id));
     viewer->setRepresentationToWireframeForAllActors();
     pcl::PointXYZ pos(centroid[0], centroid[1], centroid[2]);
-    viewer->addText3D(boost::to_string(f.id), pos, 0.3, r, g, b, "id_"+boost::to_string(f.id));
+    viewer->addText3D(boost::lexical_cast<std::string>(f.id), pos, 0.3, r, g, b, "id_"+boost::lexical_cast<std::string>(f.id));
   }
 }
 
@@ -756,7 +756,7 @@ void CloudViewer::computeProjectedPlane(pcl::PointCloud<pcl::PointXYZI>::Ptr pc,
   
   if(bins_show) {
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> rgb(plane, axe==0?255:0, axe==1?255:0, axe==2?255:0);
-    viewer->addPointCloud(plane, rgb, "plane_"+boost::to_string(axe)+"_"+boost::to_string(id));
+    viewer->addPointCloud(plane, rgb, "plane_"+boost::lexical_cast<std::string>(axe)+"_"+boost::lexical_cast<std::string>(id));
     ui->qvtkWidget->update();
   }
 }
@@ -790,7 +790,7 @@ void CloudViewer::compute3ZoneCovarianceMatrix(pcl::PointCloud<pcl::PointXYZ>::P
   if(trunk_show) {
     for(int i = 0; i < 3; i++) {
       pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> rgb(zone_decomposed[i], i==0?255:98, i==1?255:98, i==2?255:98);
-      viewer->addPointCloud(zone_decomposed[i], rgb, "zone_decomposed_"+boost::to_string(i)+"_"+boost::to_string(id));
+      viewer->addPointCloud(zone_decomposed[i], rgb, "zone_decomposed_"+boost::lexical_cast<std::string>(i)+"_"+boost::lexical_cast<std::string>(id));
       ui->qvtkWidget->update();
     }
   }
@@ -819,7 +819,7 @@ void CloudViewer::computeHistogramNormalized(pcl::PointCloud<pcl::PointXYZ>::Ptr
       	pcl::getMinMax3D(*pc, indices, min_box, max_box);
       	viewer->addCube(min_box[0], max_box[0], min_box[1], max_box[1], min_box[2], max_box[2],
       			std::max(0.3,(double)rand()/RAND_MAX), std::max(0.3,(double)rand()/RAND_MAX), std::max(0.3,(double)rand()/RAND_MAX),
-      			"histogram_"+boost::to_string(i)+"_"+boost::to_string(j)+"_"+boost::to_string(horiz_bins*verti_bins)+"_"+boost::to_string(id));
+      			"histogram_"+boost::lexical_cast<std::string>(i)+"_"+boost::lexical_cast<std::string>(j)+"_"+boost::lexical_cast<std::string>(horiz_bins*verti_bins)+"_"+boost::lexical_cast<std::string>(id));
 	viewer->setRepresentationToWireframeForAllActors();
       	ui->qvtkWidget->update();
       }
@@ -854,8 +854,8 @@ void CloudViewer::computeSlice(pcl::PointCloud<pcl::PointXYZI>::Ptr pc, int n, F
       f.slice[i+20] = centroid[0]*centroid[0] + centroid[1]*centroid[1] + centroid[2]*centroid[2];
       
       if(slice_show) {
-	viewer->addPointCloud<pcl::PointXYZI>(pc_blocks[i], "block_"+boost::to_string(i)+"_"+boost::to_string(f.id));
-	viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], 1.0, 0.27, 0.0, "slice_"+boost::to_string(i)+"_"+boost::to_string(f.id));
+	viewer->addPointCloud<pcl::PointXYZI>(pc_blocks[i], "block_"+boost::lexical_cast<std::string>(i)+"_"+boost::lexical_cast<std::string>(f.id));
+	viewer->addCube(min[0], max[0], min[1], max[1], min[2], max[2], 1.0, 0.27, 0.0, "slice_"+boost::lexical_cast<std::string>(i)+"_"+boost::lexical_cast<std::string>(f.id));
 	viewer->setRepresentationToWireframeForAllActors();
 	ui->qvtkWidget->update();
       }
